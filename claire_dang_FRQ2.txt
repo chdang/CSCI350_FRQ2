@@ -1,0 +1,28 @@
+Part 1:
+Do you always get the same order of execution?
+    - No
+Does Child 1 always execute (print Child 1 Executing before Child 2?
+    - No
+
+Part 2:
+Add a sleep(5); line before the line where Child 1 prints "Child Executing".
+● What do you notice? (1 pt)
+    Usually Child 2 prints before Child 1
+● Can we guarantee that Child 1 always execute before Child 2?
+    No sleep() only changes timing
+
+Part 3:
+After seeing what the two system calls do, why do you think we had to add system calls for the
+operations on condition variables? Why not just have these operations as functions in ulib.c as
+we did for the spinlock? (4 pts)
+    We need system calls for condition variables because cv_wait() and cv_signal() interact with kernel-managed process state and scheduling. cv_wait() must put a process to sleep, release the lock, and later wake up and reacquire the lock. cv_signal() must wake sleeping processes. Those require access to kernel data structures such as the process table and scheduler, which user-level code in ulib.c can't directly access. While the spinlock functions only perform atomic operations on shared memory so they can be implemented entirely in user space.
+
+Part4:
+● Does Child 1 always execute before Child 2?
+    yes
+
+Part5:
+● Is it always the case that Child 1 executes before Child 2? (2 pts)
+    yes
+● Do you observe deadlocks? (2 pts)
+    no
